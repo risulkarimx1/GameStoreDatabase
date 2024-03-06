@@ -1,1 +1,25 @@
-GET http://localhost:5101
+GET http://localhost:5101/games/5
+###
+GET http://localhost:5101/games/
+
+###
+POST http://localhost:5101/games/
+Content-Type: application/json
+
+{
+  "Name": "An Excellent movie",
+  "Genre": "Action",
+  "Price": 25.99,
+  "ReleaseDate": "2022-06-30"
+}
+
+###
+PUT http://localhost:5101/games/2
+Content-Type: application/json
+
+{
+  "Name": "An Excellent movie part2",
+  "Genre": "Action",
+  "Price": 25.99,
+  "ReleaseDate": "2022-06-30"
+}
