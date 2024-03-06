@@ -7,7 +7,7 @@ POST http://localhost:5101/games/
 Content-Type: application/json
 
 {
-  "Name": "awesomox1",
+  "Name": "awesomoxs2",
   "GenreId": 1,
   "Price": 25.99,
   "ReleaseDate": "2022-06-30"

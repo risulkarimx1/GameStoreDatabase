@@ -13,19 +13,14 @@ public static class GamesEndpoints
     {
         var group = app.MapGroup("games").WithParameterValidation();
         
-        // GET /games
         GetAllGames(group);
         
-        // GET /games/1
         GetGameById(group);
-
-        // POST /games
+        
         AddNewGame(group);
-
-        // PUT /games/1
+        
         UpdateExistingGame(group);
         
-        // DELETE /games/1
         DeleteAnExistingGame(group);
 
         return app;
@@ -33,9 +28,10 @@ public static class GamesEndpoints
 
     private static void DeleteAnExistingGame(IEndpointRouteBuilder group)
     {
-        group.MapDelete("/{id}", (int id, GameStoreContext dbContext) =>
+        // DELETE /games/1
+        group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
         {
-            var game = dbContext.Games.Find(id);
+            var game = await dbContext.Games.FindAsync(id);
             if (game is null)
             {
                 return Results.NotFound();
@@ -49,9 +45,10 @@ public static class GamesEndpoints
 
     private static void UpdateExistingGame(IEndpointRouteBuilder group)
     {
-        group.MapPut("/{id}", (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
+        // PUT /games/1
+        group.MapPut("/{id}", async (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
         {
-            var existingGame = dbContext.Games.Find(id);
+            var existingGame = await dbContext.Games.FindAsync(id);
             
             if (existingGame is null)
             {
@@ -68,10 +65,11 @@ public static class GamesEndpoints
 
     private static void AddNewGame(IEndpointRouteBuilder group)
     {
-        group.MapPost("/", (CreateGameDto newGame, GameStoreContext dbContext) =>
+        // POST /games
+        group.MapPost("/", async (CreateGameDto newGame, GameStoreContext dbContext) =>
         {
             var game = newGame.ToEntity();
-            game.Genre = dbContext.Genres.Find(newGame.GenreId);
+            game.Genre = await dbContext.Genres.FindAsync(newGame.GenreId);
 
             dbContext.Games.Add(game);
             dbContext.SaveChanges();
@@ -83,10 +81,10 @@ public static class GamesEndpoints
 
     private static void GetGameById(IEndpointRouteBuilder group)
     {
-        group.MapGet("/{id}",
-            (int id, GameStoreContext dbContext) =>
+        // GET /games/1
+        group.MapGet("/{id}", async (int id, GameStoreContext dbContext) =>
             {
-                var game = dbContext.Games.Find(id);
+                var game = await dbContext.Games.FindAsync(id);
                 return game is not null
                     ? Results.Ok(game.ToDetailsDto())
                     : Results.NotFound();
@@ -95,9 +93,16 @@ public static class GamesEndpoints
 
     private static void GetAllGames(IEndpointRouteBuilder group)
     {
-        group.MapGet("/", (GameStoreContext dbContext) =>
+        // GET /games
+        group.MapGet("/", async (GameStoreContext dbContext) =>
         {
-            var gameDtos = dbContext.Games.Include(g => g.Genre).Select(g => g.ToSummaryDto()).AsNoTracking();
+            var gameDtos = 
+                await dbContext.Games
+                    .Include(g => g.Genre)
+                    .Select(g => g.ToSummaryDto())
+                    .AsNoTracking()
+                    .AsNoTracking()
+                    .ToListAsync();
             return gameDtos;
         }).WithName(GetGameNameEndpoint);
     }
