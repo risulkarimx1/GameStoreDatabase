@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameStore.Api.Data.Migrations
 {
     [DbContext(typeof(GameStoreContext))]
-    [Migration("20240306192654_SeedGeneres")]
+    [Migration("20240306201825_SeedGeneres")]
     partial class SeedGeneres
     {
         /// <inheritdoc />

@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace GameStore.Api.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateWithGenre : Migration
+    public partial class SeedGeneres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,6 +46,17 @@ namespace GameStore.Api.Data.Migrations
                         principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Genres",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Action" },
+                    { 2, "Adventure" },
+                    { 3, "RPG" },
+                    { 4, "Strategy" }
                 });
 
             migrationBuilder.CreateIndex(

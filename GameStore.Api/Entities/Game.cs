@@ -13,7 +13,7 @@ public class Game
     public int GenreId { get; set; }
 
     [Required]
-    public Genre Genre { get; set; }
+    public Genre? Genre { get; set; }
 
     [Required]
     public decimal Price { get; set; }
