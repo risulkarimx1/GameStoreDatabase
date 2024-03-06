@@ -15,13 +15,15 @@ public static class GamesEndpoints
         new GameDto(5, "Game5", "Simulation", 59.99m, new DateOnly(2022, 5, 5))
     ];
 
-    public static WebApplication MapGamesEndPoints(this WebApplication app)
+    public static WebApplication  MapGamesEndPoints(this WebApplication app)
     {
+        var group = app.MapGroup("games");
+        
         // GET /games
-        app.MapGet("/games", () => Games);
+        group.MapGet("/", () => Games);
 
         // GET/games/1
-        app.MapGet("/games/{id}",
+        group.MapGet("/{id}",
             (int id) =>
             {
                 return Games.FirstOrDefault(g => g.Id == id)
@@ -31,7 +33,7 @@ public static class GamesEndpoints
             }).WithName(GetGameNameEndpoint);
 
         // POST /games
-        app.MapPost("/games", (CreateGameDto gameDto) =>
+        group.MapPost("/", (CreateGameDto gameDto) =>
         {
             var id = Games.Max(g => g.Id) + 1;
             var game = new GameDto(id, gameDto.Name, gameDto.Genre, gameDto.Price, gameDto.ReleaseDate);
@@ -40,7 +42,7 @@ public static class GamesEndpoints
         });
 
         // PUT /games/1
-        app.MapPut("/games/{id}", (int id, UpdateGameDto updatedGame) =>
+        group.MapPut("/{id}", (int id, UpdateGameDto updatedGame) =>
         {
             var index = Games.FindIndex(game => game.Id == id);
 
@@ -59,7 +61,7 @@ public static class GamesEndpoints
         });
 
         // DELETE /games/1
-        app.MapDelete("/games/{id}", (int id) =>
+        group.MapDelete("/{id}", (int id) =>
         {
             var game = Games.FirstOrDefault(g => g.Id == id);
 
