@@ -13,7 +13,7 @@ Content-Type: application/json
   "ReleaseDate": "2022-06-30"
 }
 
-####
+###
 PUT http://localhost:5101/games/2
 Content-Type: application/json
 
@@ -23,3 +23,6 @@ Content-Type: application/json
   "Price": 12.99,
   "ReleaseDate": "2022-06-30"
 }
+
+###
+DELETE http://localhost:5101/games/2
