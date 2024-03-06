@@ -20,6 +20,6 @@ Content-Type: application/json
 {
   "Name": "An Excellent movie part2",
   "Genre": "Action",
-  "Price": 25.99,
+  "Price": 125.99,
   "ReleaseDate": "2022-06-30"
 }
